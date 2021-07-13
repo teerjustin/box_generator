@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+
 import './App.css';
+import React, { useState } from  'react';
+import Boxes from './components/Boxes';
+import New from './components/New';
 
 function App() {
+  const [boxes, setBoxes] = useState([
+    {color:"green"},
+    {color:"grey"},
+    {color:"red"}
+  ])
+
+  const createBox = (newBox) => {
+    setBoxes([...boxes, newBox])
+  }
+
+  const deleteBox = (deleteIdx) => {
+    console.log('idx to be deleted', deleteIdx);
+    const newBoxes = boxes.filter((box, i) => {
+      if (deleteIdx !== i) {
+        return true;
+      } else return false;
+    })
+
+    setBoxes(newBoxes);
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h3>boxes</h3>
+      <New createBox={createBox}/>
+      {
+        boxes.map((box,i) => {
+          return <Boxes key={i} box={box} idx={i} deleteBox={deleteBox}/>
+        })
+      }
     </div>
   );
 }
